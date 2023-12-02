@@ -74,6 +74,11 @@ export const FormButton: FC<{
 export const TodoForm: FC = () => {
   const { title = "", content = "", tag = "", part } = useForm();
   const editing = useStore((state) => state.editing, shallow);
+  useEffect(() => {
+    return () => {
+      useForm.setState({ title: "", content: "", tag: "", part: undefined });
+    };
+  }, []);
   const [{ scale }, api] = useSpring(() => ({ scale: 0 }));
   useEffect(() => {
     api.start({
@@ -141,6 +146,7 @@ export const Form: FC = () => {
   const { opacity } = useSpring({
     opacity: editing ? 0.4 : 0,
   });
+
   return editing ? (
     <div className="absolute left-0 right-0 top-0 bottom-0 flex flex-col justify-end items-center">
       <animated.div
